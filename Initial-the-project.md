@@ -135,14 +135,19 @@ On the K3s server, clone the six repositories side by side under `~/app/scan-rep
 ```bash
 mkdir -p ~/app/scan-repo
 cd ~/app/scan-repo
+GITHUB_OWNER="ai-scan-repo"
 for repo in ai-scanner-backend ai-scanner-gateway ai-scanner-frontend \
             ai-scanner-backend-deployment ai-scanner-gateway-deployment \
             ai-scanner-frontend-deployment; do
   if [ ! -d "$repo" ]; then
-    git clone "https://github.com/DevOpsCourse22/$repo.git"
+    git clone "https://github.com/$GITHUB_OWNER/$repo.git"
   fi
 done
 ```
+
+These commands use the project's current organization, `ai-scan-repo`. If you
+fork the project under another GitHub organization or personal account, set
+`GITHUB_OWNER` to your owner name before running the commands.
 
 If the repositories are private, authenticate through Git's prompt or your approved credential manager. Do not put a personal access token (PAT) in a clone URL or a committed file.
 

@@ -47,7 +47,7 @@ Kubernetes pulls images; it does not see your local Docker. Two options:
 | Option | How | Good for |
 |---|---|---|
 | Load into minikube | build with `backend/build.sh` and `frontend/build.sh`, then `minikube image load <image>:<tag>` | local practice |
-| Push to a registry | `build.sh --registry ghcr.io/<you> --tag <commit-sha> --push` (after `docker login`) | K3s, anything shared, CI/CD — the plan recommends **GHCR** |
+| Push to a registry | `build.sh --registry docker.io/<dockerhub-user> --tag <commit-sha> --push` (after `docker login`) | K3s, anything shared, CI/CD; use a Docker Hub namespace, or use the AWS ECR image URI for EKS |
 
 Check it landed: `minikube image ls | grep review-`.
 

@@ -8,9 +8,9 @@ The platform orchestrates multiple analysis engines, enriches their findings usi
 
 This repository acts as the documentation and architecture umbrella for the platform. The actual implementation is split across three active repositories:
 
-- [ai-scanner-gateway](https://github.com/DevOpsCourse22/ai-scanner-gateway) handles GitHub webhook ingestion, authentication, repository triggering, and orchestration of review requests.
-- [ai-scanner-backend](https://github.com/DevOpsCourse22/ai-scanner-backend) exposes the review API, manages review lifecycle state, resumes or restarts scans, and serves generated reports.
-- [ai-scanner-frontend](https://github.com/DevOpsCourse22/ai-scanner-frontend) provides the web interface for submitting repositories, monitoring progress, and reviewing findings.
+- [ai-scanner-gateway](https://github.com/ai-scan-repo/ai-scanner-gateway) handles GitHub webhook ingestion, authentication, repository triggering, and orchestration of review requests.
+- [ai-scanner-backend](https://github.com/ai-scan-repo/ai-scanner-backend) exposes the review API, manages review lifecycle state, resumes or restarts scans, and serves generated reports.
+- [ai-scanner-frontend](https://github.com/ai-scan-repo/ai-scanner-frontend) provides the web interface for submitting repositories, monitoring progress, and reviewing findings.
 
 Together, they form a security review platform that combines repository scanning, AI enrichment, evidence-based findings, and a clean operational workflow for teams reviewing code risk.
 
@@ -95,21 +95,21 @@ This path gives you direct control over each command and the infrastructure.
 You provision the cluster and supporting services yourself; the guide's
 currently documented flow targets K3s, not Terraform-provisioned EKS.
 
-The guide's clone examples currently use the `DevOpsCourse22` GitHub owner.
-For a fork under another organization, use that organization's six
-application/deployment repositories instead.
+The installation guide uses a GitHub owner placeholder in its clone examples.
+Set it to the organization or account that owns your six application and
+deployment repositories.
 
 ## Option 2: Use Elad's Docker installer image
 
-The [installer repository and its README](https://github.com/DevOpsCourse22/ai-scanner-installer)
+The [installer repository and its README](https://github.com/ai-scan-repo/ai-scanner-quick-installer)
 describe the wizard and provide the platform-specific `docker run` commands.
-The documented image is
-`ghcr.io/devopscourse22/ai-scanner-installer:latest`. The wizard supports an
-existing local or remote Kubernetes cluster and can provision EKS with
-Terraform. It reads the three application and three deployment repositories,
-then writes generated deployment environments and CI pipeline files to a
-branch in a selected installer repository. It does not combine or replace the
-application source repositories.
+Use the installer's documented Docker Hub image name or its AWS ECR image URI,
+depending on where you publish it. The wizard supports an existing local or
+remote Kubernetes cluster and can provision EKS with Terraform. It reads the
+three application and three deployment repositories, then writes generated
+deployment environments and CI pipeline files to a branch in a selected
+installer repository. It does not combine or replace the application source
+repositories.
 
 Before using this option, confirm that the image is available to you and that
 the GitHub token can read the six repositories, manage webhooks on the three
@@ -129,10 +129,10 @@ There is one important configuration detail: the installer writes generated
 manifests to a branch such as `env/local` or `env/eks` in its selected
 installer repository. After consolidating these two repositories, select the
 new combined repository in the wizard's **Installer repository** field and
-grant the token push access to it. The installer's default is still
-`DevOpsCourse22/ai-scanner-installer`; do not rely on that default for the
-combined repository. The installer will continue to read the six separate
-application/deployment repositories.
+grant the token push access to it. The installer default is intentionally
+unchanged, so select the combined repository explicitly in the wizard rather
+than relying on its default. The installer will continue to read the six
+separate application/deployment repositories.
 
 The current workspace contains the two repositories as separate directories,
 not as an already-consolidated Git repository. This README documents the
@@ -174,11 +174,7 @@ Project documentation is located under the [docs](./docs/) directory.
 
 # Project Status
 
-Running on K3s since 2026-09-30 (namespace `ai-scan-repos`; guide:
-`Code-Review-MCP/k8s/DEPLOY-K3S.md`). A redesigned website with pause and
-resume, an admin-chosen AI model (LM Studio or a cloud API), severity
-circles in the report and review deletion is on branch
-`elad/ui-redesign-pause-resume`, under the repo https://github.com/hadsahar/DevSecOps-Final-Project/tree/main not merged yet.
+A K3s deployment was documented as working on 2026-09-30 (namespace ai-scan-repos); see [DEPLOY-K3S.md](https://github.com/ai-scan-repo/ai-scanner-backend-deployment/blob/main/DEPLOY-K3S.md). The elad/ui-redesign-pause-resume branch was merged into main via PR #10 on 2026-10-02.
 
 What is done and what is next: [docs/WORK-TRACKER.md](./docs/WORK-TRACKER.md). Where a new session
 picks up: [HANDOFF.md](./HANDOFF.md). Notes for Claude Code: [CLAUDE.md](./CLAUDE.md).
