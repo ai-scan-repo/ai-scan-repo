@@ -80,12 +80,74 @@ Unified Report
 
 ---
 
+# Installation Options and Repository Consolidation
+
+There are two supported ways to deploy the platform. Choose one; the second
+option automates much of the infrastructure and deployment work, but still
+requires a few GitHub and cloud-provider actions from the operator.
+
+## Option 1: Build and deploy it yourself
+
+Use the [step-by-step installation guide](./Initial-the-project.md) to prepare
+a Linux/K3s server, check out the application and deployment repositories,
+build and import the images, configure credentials, and deploy the manifests.
+This path gives you direct control over each command and the infrastructure.
+You provision the cluster and supporting services yourself; the guide's
+currently documented flow targets K3s, not Terraform-provisioned EKS.
+
+The guide's clone examples currently use the `DevOpsCourse22` GitHub owner.
+For a fork under another organization, use that organization's six
+application/deployment repositories instead.
+
+## Option 2: Use Elad's Docker installer image
+
+The [installer repository and its README](https://github.com/DevOpsCourse22/ai-scanner-installer)
+describe the wizard and provide the platform-specific `docker run` commands.
+The documented image is
+`ghcr.io/devopscourse22/ai-scanner-installer:latest`. The wizard supports an
+existing local or remote Kubernetes cluster and can provision EKS with
+Terraform. It reads the three application and three deployment repositories,
+then writes generated deployment environments and CI pipeline files to a
+branch in a selected installer repository. It does not combine or replace the
+application source repositories.
+
+Before using this option, confirm that the image is available to you and that
+the GitHub token can read the six repositories, manage webhooks on the three
+application repositories, and push to the selected installer repository. EKS
+also requires an AWS account and credentials. GitHub OAuth app creation and
+some provider-side setup remain manual.
+
+## Can `ai-scan-repo` and `ai-scanner-quick-installer` become one repository?
+
+Yes. A single Git repository can retain the documentation repository's
+contents at the root and place the installer files in their own subdirectory,
+leaving all `ai-scanner-*` application and deployment repositories untouched.
+Keeping the installer files together preserves its Docker build context and
+keeps the documentation's existing relative paths intact.
+
+There is one important configuration detail: the installer writes generated
+manifests to a branch such as `env/local` or `env/eks` in its selected
+installer repository. After consolidating these two repositories, select the
+new combined repository in the wizard's **Installer repository** field and
+grant the token push access to it. The installer's default is still
+`DevOpsCourse22/ai-scanner-installer`; do not rely on that default for the
+combined repository. The installer will continue to read the six separate
+application/deployment repositories.
+
+The current workspace contains the two repositories as separate directories,
+not as an already-consolidated Git repository. This README documents the
+options and required configuration; it does not perform a Git-history merge
+or change any `ai-scanner-*` code.
+
+---
+
 # Documentation
 
 Project documentation is located under the [docs](./docs/) directory.
 
 | No. | Document | Link |
 |---:|---|---|
+| — | Complete Installation and Deployment Guide | [Initial-the-project.md](./Initial-the-project.md) |
 | 01 | Executive Summary | [01-executive-summary.md](docs/01-executive-summary.md) |
 | 02 | Business Requirements | [02-business-requirements.md](docs/02-business-requirements.md) |
 | 03 | High-Level Design | [03-high-level-design/README.md](docs/03-high-level-design/README.md) |
@@ -128,6 +190,7 @@ picks up: [HANDOFF.md](./HANDOFF.md). Notes for Claude Code: [CLAUDE.md](./CLAUD
 ```text
 ai-scan-repo/
 ├── README.md
+├── Initial-the-project.md
 ├── docs/
 │   ├── index.md
 │   ├── 01-executive-summary.md
